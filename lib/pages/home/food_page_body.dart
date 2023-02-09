@@ -3,6 +3,8 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/controllers/product_menu_controller.dart';
 import 'package:food_delivery/models/products_model.dart';
+import 'package:food_delivery/pages/Food/popular_food_details.dart';
+import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:get/get.dart';
 
@@ -49,12 +51,17 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         GetBuilder<PopularProductController>(builder: (popularProducts){
           return popularProducts.isLoaded?Container(
             height: Dimensions.pageView,
-            child: PageView.builder(
-                controller: pageController,
-                itemCount: popularProducts.popularProductList.length,
-                itemBuilder: (context, position){
-                  return _buildPageItem(position, popularProducts.popularProductList[position]);
-                }),
+            child: GestureDetector(
+              onTap: (){
+                Get.toNamed(RouteHelper.getPopularFood());
+              },
+              child: PageView.builder(
+                  controller: pageController,
+                  itemCount: popularProducts.popularProductList.length,
+                  itemBuilder: (context, position){
+                    return _buildPageItem(position, popularProducts.popularProductList[position]);
+                  }),
+            ),
 
           ):
           CircularProgressIndicator(
@@ -106,66 +113,71 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               shrinkWrap: true,
               itemCount: productMenu.productMenuList.length,
               itemBuilder: (context, index){
-                return Container(
-                  margin: EdgeInsets.only(left: Dimensions.width30/2, right: Dimensions.width30/2, bottom: Dimensions.height10),
-                  child: Row(
-                    children: [
-                      //Image container
-                      Container(
-                        width: Dimensions.listViewImgSize,
-                        height: Dimensions.listViewImgSize,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(Dimensions.radius20),
-                            color: Colors.white38,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    "${AppConstants.BASE_URL+AppConstants.UPLOAD_URL}${productMenu.productMenuList[index].img}"
-                                )
-                            )
+                return GestureDetector(
+                  onTap: (){
+                    Get.toNamed(RouteHelper.getFoodMenu());
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(left: Dimensions.width30/2, right: Dimensions.width30/2, bottom: Dimensions.height10),
+                    child: Row(
+                      children: [
+                        //Image container
+                        Container(
+                          width: Dimensions.listViewImgSize,
+                          height: Dimensions.listViewImgSize,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(Dimensions.radius20),
+                              color: Colors.white38,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                      "${AppConstants.BASE_URL+AppConstants.UPLOAD_URL}${productMenu.productMenuList[index].img}"
+                                  )
+                              )
 
-                        ),
-                      ),
-
-                      //Text container
-                      Expanded(
-                        child: Container(
-                          height: Dimensions.listViewTextSize,
-                          decoration: const BoxDecoration(
-                            color: Colors.white70,
                           ),
-                          child: Padding(
-                            padding: EdgeInsets.only(left: Dimensions.width15, right: Dimensions.width15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                BigText(text: productMenu.productMenuList[index].name!),
-                                SizedBox(height: Dimensions.height10,),
-                                SmallText(text: "Fried chicken with catchup's"),
-                                SizedBox(height: Dimensions.height10,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconTextWidget(icon: Icons.circle_sharp, size: Dimensions.icon16,
-                                        text: "Normal",
-                                        iconColor: AppColors.iconColor1),
-                                    IconTextWidget(icon: Icons.location_city, size: Dimensions.icon16,
-                                        text: "Service",
-                                        iconColor: AppColors.iconColor2),
-                                    IconTextWidget(icon: Icons.access_time_rounded, size: Dimensions.icon16,
-                                        text: "8AM - 8PM",
-                                        iconColor: AppColors.iconColor2)
-                                  ],
-                                )
+                        ),
 
-                              ],
+                        //Text container
+                        Expanded(
+                          child: Container(
+                            height: Dimensions.listViewTextSize,
+                            decoration: const BoxDecoration(
+                              color: Colors.white70,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(left: Dimensions.width15, right: Dimensions.width15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  BigText(text: productMenu.productMenuList[index].name!),
+                                  SizedBox(height: Dimensions.height10,),
+                                  SmallText(text: "Fried chicken with catchup's"),
+                                  SizedBox(height: Dimensions.height10,),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconTextWidget(icon: Icons.circle_sharp, size: Dimensions.icon16,
+                                          text: "Normal",
+                                          iconColor: AppColors.iconColor1),
+                                      IconTextWidget(icon: Icons.location_city, size: Dimensions.icon16,
+                                          text: "Service",
+                                          iconColor: AppColors.iconColor2),
+                                      IconTextWidget(icon: Icons.access_time_rounded, size: Dimensions.icon16,
+                                          text: "8AM - 8PM",
+                                          iconColor: AppColors.iconColor2)
+                                    ],
+                                  )
+
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      )
+                        )
 
-                    ],
+                      ],
+                    ),
                   ),
                 );
               }
@@ -251,8 +263,6 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               ),
             ),
           ),
-
-
         ],
       ),
     );

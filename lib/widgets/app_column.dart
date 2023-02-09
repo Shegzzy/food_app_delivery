@@ -35,13 +35,13 @@ class AppColumn extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            IconTextWidget(icon: Icons.circle_sharp,
+            IconTextWidget(icon: Icons.circle_sharp, size: Dimensions.icon24,
                 text: "Normal",
                 iconColor: AppColors.iconColor1),
-            IconTextWidget(icon: Icons.location_city,
+            IconTextWidget(icon: Icons.location_city, size: Dimensions.icon24,
                 text: "Service",
                 iconColor: AppColors.iconColor2),
-            IconTextWidget(icon: Icons.access_time_rounded,
+            IconTextWidget(icon: Icons.access_time_rounded, size: Dimensions.icon24,
                 text: "8AM - 8PM",
                 iconColor: AppColors.iconColor2)
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
+import 'package:food_delivery/controllers/product_menu_controller.dart';
 import 'package:food_delivery/pages/Food/recommended_food_details.dart';
 import 'package:food_delivery/pages/home/main_food_homepage.dart';
 import 'helper/dependencies.dart' as dep;
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.find<PopularProductController>().getPopularProductList();
+    Get.find<ProductMenuController>().getProductMenuList();
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

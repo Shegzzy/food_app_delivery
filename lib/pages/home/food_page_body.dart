@@ -51,17 +51,13 @@ class _FoodPageBodyState extends State<FoodPageBody> {
         GetBuilder<PopularProductController>(builder: (popularProducts){
           return popularProducts.isLoaded?Container(
             height: Dimensions.pageView,
-            child: GestureDetector(
-              onTap: (){
-                Get.toNamed(RouteHelper.getPopularFood());
-              },
+
               child: PageView.builder(
                   controller: pageController,
                   itemCount: popularProducts.popularProductList.length,
                   itemBuilder: (context, position){
                     return _buildPageItem(position, popularProducts.popularProductList[position]);
                   }),
-            ),
 
           ):
           CircularProgressIndicator(
@@ -106,7 +102,8 @@ class _FoodPageBodyState extends State<FoodPageBody> {
           ),
         ),
 
-        //Food List
+
+        //Food Menu List
         GetBuilder<ProductMenuController>(builder: (productMenu){
           return ListView.builder(
               physics: NeverScrollableScrollPhysics(),
@@ -115,7 +112,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
               itemBuilder: (context, index){
                 return GestureDetector(
                   onTap: (){
-                    Get.toNamed(RouteHelper.getFoodMenu());
+                    Get.toNamed(RouteHelper.getFoodMenu(index, "home"));
                   },
                   child: Container(
                     margin: EdgeInsets.only(left: Dimensions.width30/2, right: Dimensions.width30/2, bottom: Dimensions.height10),
@@ -131,7 +128,7 @@ class _FoodPageBodyState extends State<FoodPageBody> {
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                   image: NetworkImage(
-                                      "${AppConstants.BASE_URL+AppConstants.UPLOAD_URL}${productMenu.productMenuList[index].img}"
+                                      "${AppConstants.BASE_URL+AppConstants.UPLOAD_URL}${productMenu.productMenuList[index].img!}"
                                   )
                               )
 
@@ -211,25 +208,30 @@ class _FoodPageBodyState extends State<FoodPageBody> {
       transform: matrix,
       child: Stack(
         children: [
-          Container(
-            height: Dimensions.pageViewContainer,
-            margin: EdgeInsets.only(left: Dimensions.width10, right: Dimensions.width10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.radius30),
-                color: index.isEven?const Color(0xFF69c5df):const Color(0xFF9294cc),
-                boxShadow: const [
-                  BoxShadow(
-                      color: Color(0xFFe8e8e8),
-                      blurRadius: 2.5,
-                      offset: Offset(0, 5)
-                  )
-                ],
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                        "${AppConstants.BASE_URL+AppConstants.UPLOAD_URL}${popularProduct.img!}"
+          GestureDetector(
+            onTap: (){
+              Get.toNamed(RouteHelper.getPopularFood(index, "home"));
+            },
+            child: Container(
+              height: Dimensions.pageViewContainer,
+              margin: EdgeInsets.only(left: Dimensions.width10, right: Dimensions.width10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(Dimensions.radius30),
+                  color: index.isEven?const Color(0xFF69c5df):const Color(0xFF9294cc),
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Color(0xFFe8e8e8),
+                        blurRadius: 2.5,
+                        offset: Offset(0, 5)
                     )
-                )
+                  ],
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                          "${AppConstants.BASE_URL+AppConstants.UPLOAD_URL}${popularProduct.img!}"
+                      )
+                  )
+              ),
             ),
           ),
           Align(

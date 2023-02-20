@@ -1,4 +1,7 @@
+
 import 'package:flutter/material.dart';
+import 'package:food_delivery/controllers/popular_product_controller.dart';
+import 'package:food_delivery/pages/cart/cart_page.dart';
 import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/widgets/app_icon.dart';
@@ -6,13 +9,20 @@ import 'package:food_delivery/widgets/big_text.dart';
 import 'package:food_delivery/widgets/expandable_text.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/cart_controller.dart';
+import '../../controllers/product_menu_controller.dart';
+import '../../utils/app_constants.dart';
 import '../../utils/dimensions.dart';
 
 class RecommendedFoodDetails extends StatelessWidget {
-  const RecommendedFoodDetails({Key? key}) : super(key: key);
+  final int pageId;
+  final String page;
+  const RecommendedFoodDetails({Key? key, required this.pageId, required this.page}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var product = Get.find<ProductMenuController>().productMenuList[pageId];
+    Get.find<PopularProductController>().initProduct(product, Get.find<CartController>());
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
@@ -24,13 +34,48 @@ class RecommendedFoodDetails extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                    child: AppIcon(icon: Icons.clear_sharp),
                     onTap: (){
-                      Get.toNamed(RouteHelper.getInitial());
+                      if(page == "cartpage"){
+                        Get.toNamed(RouteHelper.getCartPage());
+                      }else{
+                        Get.toNamed(RouteHelper.getInitial());
+
+                      }
                     },
+                  child: AppIcon(icon: Icons.clear_sharp),
                 ),
-                AppIcon(icon: Icons.shopping_cart_outlined)
-              ],
+                GetBuilder<PopularProductController>(builder: (controller){
+                  return Stack(
+                    children: [
+                      GestureDetector(
+                          onTap: (){
+                            if(controller.totalItems >= 1){
+                              Get.toNamed(RouteHelper.getCartPage());
+                            }else{
+                              Get.snackbar("Cart Items", "Your Cart is empty!!!",
+                                backgroundColor: AppColors.mainColor,
+                                colorText: Colors.white,
+                              );
+                            }
+                          },
+                          child: AppIcon(icon: Icons.shopping_cart_outlined)),
+                      Get.find<PopularProductController>().totalItems >= 1 ?
+                      Positioned(
+                          right:0,
+                          top:0,
+                          child: AppIcon(icon: Icons.circle, size: 15, backgroundColor: AppColors.mainColor, iconColor:Colors.transparent)):
+                      Container(),
+                      Get.find<PopularProductController>().totalItems >= 1 ?
+                      Positioned(
+                          right:4,
+                          top:1,
+                          child:
+                          BigText(text: Get.find<PopularProductController>().totalItems.toString(), size: 12, color: Colors.white,)
+                      ):
+                      Container()
+                    ],
+                  );
+                })              ],
             ),
             bottom: PreferredSize(preferredSize: Size.fromHeight(20),
               child: Container(
@@ -44,7 +89,7 @@ class RecommendedFoodDetails extends StatelessWidget {
                   )
                 ),
                 child: Center(
-                  child: BigText(text: "Tasty Fried Chicken",)
+                  child: BigText(text: product.name!)
                 ),
               ),
             ),
@@ -52,8 +97,8 @@ class RecommendedFoodDetails extends StatelessWidget {
             backgroundColor: AppColors.yellowColor,
             expandedHeight: 300,
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.asset(
-                  "assets/image/chicken.png",
+              background: Image.network(
+                AppConstants.BASE_URL+AppConstants.UPLOAD_URL+product.img,
                   width: double.maxFinite,
                   fit: BoxFit.cover,
 
@@ -64,82 +109,97 @@ class RecommendedFoodDetails extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-
-                  child: const ExpandableText(
-                      text: "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"
-                  ),
                   margin: EdgeInsets.only(left: Dimensions.width10, right: Dimensions.width10),
+                  child: ExpandableText(
+                      text: product.description!
+                  ),
                 )
               ],
             ),
           )
         ],
       ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: EdgeInsets.only(
-              left: Dimensions.width45+5,
-              right: Dimensions.width45+5,
-              top: Dimensions.height15,
-              bottom: Dimensions.height15
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AppIcon(icon: Icons.remove, iconColor: Colors.black54 ),
-                BigText(text: "\$12.88 "+" X" " 0 "),
-                AppIcon(icon: Icons.add, iconColor: Colors.black54),
-
-              ],
-            ),
-          ),
-          Container(
-            height: Dimensions.height120,
-            padding: EdgeInsets.only(top: Dimensions.height30, bottom: Dimensions.height30, left: Dimensions.width20, right: Dimensions.width20),
-            decoration: BoxDecoration(
-                color: AppColors.buttonBackgroundColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(Dimensions.radius30),
-                  topRight: Radius.circular(Dimensions.radius30),
-
-                )
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: Dimensions.height45-5,
-                  height: Dimensions.height45-5,
-                  padding: EdgeInsets.only(left: Dimensions.width10, right: Dimensions.width10, top: Dimensions.height10, bottom: Dimensions.height10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Dimensions.radius15),
-                    color: Colors.white,
+      bottomNavigationBar: GetBuilder<PopularProductController>(builder: (controller){
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                  left: Dimensions.width45+5,
+                  right: Dimensions.width45+5,
+                  top: Dimensions.height15,
+                  bottom: Dimensions.height15
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      controller.setQuantity(false);
+                    },
+                    child: AppIcon(icon: Icons.remove, iconColor: Colors.black54, backgroundColor: AppColors.mainColor),
                   ),
-                  child: Icon(
-                    Icons.favorite_sharp,
-                    color: AppColors.mainColor,
-                    size: Dimensions.icon24,
+                  BigText(text: "\$${product.price!} X ${controller.inCartItems} "),
+                  GestureDetector(
+                    onTap: (){
+                      controller.setQuantity(true);
+                    },
+                    child: AppIcon(icon: Icons.add, iconColor: Colors.black54, backgroundColor: AppColors.mainColor),
                   )
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: Dimensions.width10, right: Dimensions.width10, top: Dimensions.height10, bottom: Dimensions.height10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Dimensions.radius15),
-                    color: AppColors.mainColor,
-                  ),
-                  child: Row(
-                    children: [
-                      BigText(text: "\$10 Add to cart", color: Colors.white,),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
+            Container(
+              height: Dimensions.height120,
+              padding: EdgeInsets.only(top: Dimensions.height30, bottom: Dimensions.height30, left: Dimensions.width20, right: Dimensions.width20),
+              decoration: BoxDecoration(
+                  color: AppColors.buttonBackgroundColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(Dimensions.radius30),
+                    topRight: Radius.circular(Dimensions.radius30),
+
+                  )
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      width: Dimensions.height45-5,
+                      height: Dimensions.height45-5,
+                      padding: EdgeInsets.only(left: Dimensions.width10, right: Dimensions.width10, top: Dimensions.height10, bottom: Dimensions.height10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(Dimensions.radius15),
+                        color: Colors.white,
+                      ),
+                      child: Icon(
+                        Icons.favorite_sharp,
+                        color: AppColors.mainColor,
+                        size: Dimensions.icon24,
+                      )
+                  ),
+                  GestureDetector(
+                    onTap: (){
+                      controller.addItem(product);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(left: Dimensions.width15, right: Dimensions.width15, top: Dimensions.height10, bottom: Dimensions.height10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(Dimensions.radius15),
+                        color: AppColors.mainColor,
+                      ),
+                      child: Row(
+                        children: [
+                          BigText(text: "\$${product.price!} Add to cart", color: Colors.white,),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

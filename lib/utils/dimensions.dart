@@ -46,4 +46,7 @@ class Dimensions{
   //popular food
   static double popularFoodSize = screenHeight/2.0;
 
+  // splash screen image
+  static double splashImg = screenHeight/2.80;
+
 }

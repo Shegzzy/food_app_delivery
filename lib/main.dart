@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/controllers/cart_controller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/controllers/product_menu_controller.dart';
 import 'package:food_delivery/pages/Food/recommended_food_details.dart';
@@ -20,14 +21,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Get.find<PopularProductController>().getPopularProductList();
-    Get.find<ProductMenuController>().getProductMenuList();
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-
-      //home: MainFoodPage(),
-      initialRoute: RouteHelper.getInitial(),
-      getPages: RouteHelper.routes,
-    );
+    Get.find<CartController>().getCartData();
+    // Initializing the controllers
+    return GetBuilder<PopularProductController>(builder: (_){
+      return GetBuilder<ProductMenuController>(builder: (_){
+        return GetBuilder<CartController>(builder: (_){
+          return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            //home: MainFoodPage(),
+            initialRoute: RouteHelper.getSplashScreen(),
+            getPages: RouteHelper.routes,
+          );
+        });
+      });
+    });
   }
 }

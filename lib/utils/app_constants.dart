@@ -9,6 +9,7 @@ class AppConstants{
 
 
   static const String APP_TOKEN = "QSToken";
-  static const String CAERT_LIST = "cart-list";
+  static const String CART_LIST = "cart-list";
+  static const String CART_HISTORY = "cart-history";
 
 }

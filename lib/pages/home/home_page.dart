@@ -6,6 +6,9 @@ import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/widgets/app_icon.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../profile/profile_page.dart';
+import '../sign_up/sign_up_page.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -19,10 +22,10 @@ class _HomePageState extends State<HomePage> {
   late PersistentTabController _controller;
 
   List pages =[
-    MainFoodPage(),
-    Container(child: Center(child: Text("Page 1"),),),
-    CartHistory(),
-    Container(child: Center(child: Text("Page 3"),),),
+    const MainFoodPage(),
+    const SignUpPage(),
+    const CartHistory(),
+    const ProfilePage(),
 
   ];
   // Going to the selected tab page

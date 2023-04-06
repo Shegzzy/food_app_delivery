@@ -42,23 +42,16 @@ class RecommendedFoodDetails extends StatelessWidget {
 
                       }
                     },
-                  child: AppIcon(icon: Icons.clear_sharp),
+                  child: const AppIcon(icon: Icons.clear_sharp),
                 ),
                 GetBuilder<PopularProductController>(builder: (controller){
                   return Stack(
                     children: [
                       GestureDetector(
                           onTap: (){
-                            if(controller.totalItems >= 1){
-                              Get.toNamed(RouteHelper.getCartPage());
-                            }else{
-                              Get.snackbar("Cart Items", "Your Cart is empty!!!",
-                                backgroundColor: AppColors.mainColor,
-                                colorText: Colors.white,
-                              );
-                            }
+                            Get.toNamed(RouteHelper.getCartPage());
                           },
-                          child: AppIcon(icon: Icons.shopping_cart_outlined)),
+                          child: const AppIcon(icon: Icons.shopping_cart_outlined)),
                       Get.find<PopularProductController>().totalItems >= 1 ?
                       Positioned(
                           right:0,
@@ -77,7 +70,7 @@ class RecommendedFoodDetails extends StatelessWidget {
                   );
                 })              ],
             ),
-            bottom: PreferredSize(preferredSize: Size.fromHeight(20),
+            bottom: PreferredSize(preferredSize: const Size.fromHeight(20),
               child: Container(
                 width: double.maxFinite,
                 padding: EdgeInsets.only(top: Dimensions.height10-5, bottom: Dimensions.height10-5),

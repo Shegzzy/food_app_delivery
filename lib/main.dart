@@ -4,6 +4,9 @@ import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/controllers/product_menu_controller.dart';
 import 'package:food_delivery/pages/Food/recommended_food_details.dart';
 import 'package:food_delivery/pages/home/main_food_homepage.dart';
+import 'package:food_delivery/pages/login/login_page.dart';
+import 'package:food_delivery/pages/sign_up/sign_up_page.dart';
+import 'package:food_delivery/pages/splash/splash_screen.dart';
 import 'package:food_delivery/routes/route_helper.dart';
 import 'helper/dependencies.dart' as dep;
 import 'package:get/get.dart';
@@ -26,11 +29,11 @@ class MyApp extends StatelessWidget {
     return GetBuilder<PopularProductController>(builder: (_){
       return GetBuilder<ProductMenuController>(builder: (_){
         return GetBuilder<CartController>(builder: (_){
-          return GetMaterialApp(
+          return const GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            //home: MainFoodPage(),
-            initialRoute: RouteHelper.getSplashScreen(),
-            getPages: RouteHelper.routes,
+            home: LoginPage(),
+            //initialRoute: RouteHelper.getSplashScreen(),
+            //getPages: RouteHelper.routes,
           );
         });
       });

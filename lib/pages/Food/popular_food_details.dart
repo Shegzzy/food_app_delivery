@@ -61,23 +61,16 @@ class PopularFoodDetails extends StatelessWidget {
                           Get.toNamed(RouteHelper.getInitial());
                         }
                       },
-                      child: AppIcon(icon: Icons.arrow_back_ios)),
+                      child: const AppIcon(icon: Icons.arrow_back_ios)),
 
                   GetBuilder<PopularProductController>(builder: (controller){
                     return Stack(
                       children: [
                         GestureDetector(
                             onTap: (){
-                              if(controller.totalItems >= 1){
-                                Get.toNamed(RouteHelper.getCartPage());
-                              }else{
-                                Get.snackbar("Cart Items", "Your Cart is empty!!!",
-                                  backgroundColor: AppColors.mainColor,
-                                  colorText: Colors.white,
-                                );
-                              }
-                    },
-                            child: AppIcon(icon: Icons.shopping_cart_outlined)),
+                              Get.toNamed(RouteHelper.getCartPage());
+                            },
+                            child: const AppIcon(icon: Icons.shopping_cart_outlined)),
                         controller.totalItems >= 1 ?
                           Positioned(
                               right:0,
@@ -157,7 +150,9 @@ class PopularFoodDetails extends StatelessWidget {
                         onTap: (){
                           productController.setQuantity(false);
                         },
-                        child: AppIcon(icon: Icons.remove, iconColor: AppColors.signColor, backgroundColor: AppColors.mainColor,)),
+                        child: AppIcon(icon: Icons.remove,
+                          iconColor: AppColors.signColor,
+                          backgroundColor: AppColors.mainColor,)),
                     SizedBox(width: Dimensions.width15,),
                     BigText(text: productController.inCartItems.toString()),
                     SizedBox(width: Dimensions.width15,),

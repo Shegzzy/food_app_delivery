@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/dimensions.dart';
 import 'package:get/get.dart';
@@ -30,14 +31,22 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   void initState(){
     _loadResources();
     super.initState();
-    animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2))..forward();
+    animationController = AnimationController(vsync: this, duration: const Duration(seconds: 3))..forward();
     animation = CurvedAnimation(parent: animationController, curve: Curves.linearToEaseOut);
 
+    if(Get.find<AuthController>().userLoggedIn()){
+      Timer(
+          const Duration(seconds: 5),
+              ()=>Get.offNamed(RouteHelper.getInitial())
+      );
+    }else{
+      Timer(
+          const Duration(seconds: 5),
+              ()=>Get.offNamed(RouteHelper.getLoginPage())
+      );
+    }
 
-    Timer(
-      const Duration(seconds: 5),
-        ()=>Get.offNamed(RouteHelper.getInitial())
-    );
+
   }
 
   @override

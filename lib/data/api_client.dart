@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../base/custom_message.dart';
 import '../utils/app_constants.dart';
 
 class ApiClient extends GetConnect implements GetxService{
@@ -16,6 +17,14 @@ class ApiClient extends GetConnect implements GetxService{
       'Authorization': 'Bearer $token',
     };
   }
+
+  void updateHeader(String token){
+    _mainHeaders = {
+      'Content-type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token',
+    };
+  }
+
 // Request for getting data from server
     Future<Response> getData(String uri,) async{
       try{
@@ -24,5 +33,19 @@ class ApiClient extends GetConnect implements GetxService{
       }catch(e){
         return Response(statusCode: 1, statusText: e.toString());
       }
+    }
+
+    //Request for posting data to the server
+    Future<Response> postData(String uri, dynamic body) async{
+    //print(body.toString());
+      try{
+        Response response = await post(uri, body, headers: _mainHeaders);
+        // print(response.toString());
+        return response;
+      }catch(e){
+        customSnackBar(e.toString(), title: "Error");
+        return Response(statusCode: 1, statusText: e.toString());
+      }
+
     }
 }

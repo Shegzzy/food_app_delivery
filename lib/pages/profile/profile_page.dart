@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/controllers/auth_controller.dart';
+import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimensions.dart';
 import 'package:food_delivery/widgets/app_icon.dart';
 import 'package:food_delivery/widgets/profile_widget.dart';
+import 'package:get/get.dart';
 
 import '../../widgets/big_text.dart';
 
@@ -38,6 +41,7 @@ class ProfilePage extends StatelessWidget {
               ),
             Expanded(
               child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
                     //Profile name
@@ -108,7 +112,7 @@ class ProfilePage extends StatelessWidget {
 
                     ),
 
-                    //Profile settings
+                    //Logout
                     ProfileWidget(
                       appIcon: AppIcon(
                         icon: Icons.settings,
@@ -123,6 +127,30 @@ class ProfilePage extends StatelessWidget {
 
                       ),
 
+                    ),
+                    GestureDetector(
+                      onTap: (){
+                        if(Get.find<AuthController>().userLoggedIn()){
+                          Get.find<AuthController>().clearSharedData();
+                          Get.offNamed(RouteHelper.getLoginPage());
+                        }
+
+                      },
+                      child: ProfileWidget(
+                        appIcon: AppIcon(
+                          icon: Icons.logout_rounded,
+                          size: Dimensions.height10*3,
+                          backgroundColor: Colors.redAccent,
+                          iconColor: Colors.white,
+                          iconSize: Dimensions.icon24-4,
+                        ),
+                        bigText: BigText(
+                          text: "Logout",
+                          size: Dimensions.font18,
+
+                        ),
+
+                      ),
                     ),
                   ],
                 ),

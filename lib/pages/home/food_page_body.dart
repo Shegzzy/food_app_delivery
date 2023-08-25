@@ -14,6 +14,7 @@ import '../../widgets/app_column.dart';
 import '../../widgets/big_text.dart';
 import '../../widgets/icon_text_widget.dart';
 import '../../widgets/small_text.dart';
+
 class FoodPageBody extends StatefulWidget {
   const FoodPageBody({Key? key}) : super(key: key);
 

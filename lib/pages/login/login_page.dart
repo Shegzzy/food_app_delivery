@@ -25,12 +25,12 @@ class LoginPage extends StatelessWidget {
 
       if(phone.isEmpty){
         customSnackBar("Enter a phone number", title: "Invalid Phone Number");
-      }else if(password.length<8 || password.isEmpty){
-        customSnackBar("Password can't be less than 8 characters", title: "Invalid Password");
+      }else if(password.length<6 || password.isEmpty){
+        customSnackBar("Password can't be less than 6 characters", title: "Invalid Password");
       }else{
         authController.login(phone, password).then((status){
           if(status.isSuccess){
-            Get.toNamed(RouteHelper.getInitial());
+            Get.toNamed(RouteHelper.initial);
           }else{
             customSnackBar(status.message);
           }

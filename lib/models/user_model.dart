@@ -12,6 +12,7 @@ class UserModel{
     required this.id,
     required this.orderCount,
 });
+  //Converting object from json. "f_name" is referred to the fields in the db table
   factory UserModel.fromJson(Map<String, dynamic> json){
     return UserModel(
         name: json['f_name'],

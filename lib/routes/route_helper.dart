@@ -1,4 +1,5 @@
 import 'package:food_delivery/pages/Food/popular_food_details.dart';
+import 'package:food_delivery/pages/address/address_page.dart';
 import 'package:food_delivery/pages/cart/cart_history.dart';
 import 'package:food_delivery/pages/cart/cart_history_page.dart';
 import 'package:food_delivery/pages/cart/cart_page.dart';
@@ -20,6 +21,7 @@ class RouteHelper{
   static const historyPage = "/history-page";
   static const cartHistory = "/cart-history";
   static const splashScreen = "/splash-screen";
+  static const addAddress = "/add-address";
 
 
   static String getPopularFood(int pageId, String page)=>'$popularFood?pageId=$pageId&page=$page';
@@ -30,6 +32,7 @@ class RouteHelper{
   static String getSplashScreen()=> splashScreen;
   static String getLoginPage()=> loginPage;
   static String getSignUpPage()=> signUpPage;
+  static String getAddressPage()=> addAddress;
   static String getInitial()=>initial;
 
   static List<GetPage> routes = [
@@ -69,6 +72,12 @@ class RouteHelper{
 
     GetPage(name: signUpPage, page: (){
       return const SignUpPage();
+    },
+        transition: Transition.rightToLeftWithFade
+    ),
+
+    GetPage(name: addAddress, page: (){
+      return const AddressPage();
     },
         transition: Transition.rightToLeftWithFade
     ),

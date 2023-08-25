@@ -18,13 +18,8 @@ class CartRepo{
     // return;
     var time = DateTime.now().toString();
     cart = [];
-    //converting objects of (CartModel) to string because sharedpreference accepts only strings use jsonEncode (these two are the same)
 
-    /*
-        cartList.forEach((element) {
-          return cart.add(jsonEncode(element));
-        });
-    */
+    //converting objects of (CartModel) to string because shared preference accepts only strings use jsonEncode (these two are the same)
     cartList.forEach((element){
       element.time =time;
       return cart.add(jsonEncode(element));

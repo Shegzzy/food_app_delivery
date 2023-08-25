@@ -16,7 +16,7 @@ class MainFoodPage extends StatefulWidget {
   State<MainFoodPage> createState() => _MainFoodPageState();
 }
 
-Future<void> _loadResources() async {
+Future<void> _reLoadResources() async {
   await Get.find<PopularProductController>().getPopularProductList();
   await Get.find<ProductMenuController>().getProductMenuList();
 }
@@ -24,7 +24,7 @@ Future<void> _loadResources() async {
 class _MainFoodPageState extends State<MainFoodPage> {
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(onRefresh: _loadResources, child: Column(
+    return RefreshIndicator(onRefresh: _reLoadResources, child: Column(
       children: [
         // Showing the header
         Container(
@@ -39,7 +39,7 @@ class _MainFoodPageState extends State<MainFoodPage> {
                   Row(
                     children: [
                       SmallText(text: "Kogi"),
-                      Icon(Icons.arrow_drop_down_rounded)
+                      const Icon(Icons.arrow_drop_down_rounded)
                     ],
                   )
                 ],

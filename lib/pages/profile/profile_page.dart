@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/base/custom_loading.dart';
 import 'package:food_delivery/controllers/auth_controller.dart';
+import 'package:food_delivery/controllers/cart_controller.dart';
 import 'package:food_delivery/controllers/user_controller.dart';
 import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/colors.dart';
@@ -35,7 +36,8 @@ class ProfilePage extends StatelessWidget {
       body: GetBuilder<UserController>(builder: (userController){
         //print(userController.userModel.name);
         return _userLoggedIn?(
-            userController.isLoading?Container(
+            userController.isLoading?
+            Container(
               width: double.maxFinite,
               margin: EdgeInsets.only(top: Dimensions.height10),
               child: Column(
@@ -63,7 +65,7 @@ class ProfilePage extends StatelessWidget {
                               iconSize: Dimensions.icon24-4,
                             ),
                             bigText: BigText(
-                              text: userController.userModel.name,
+                              text: userController.userModel!.name,
                               size: Dimensions.font18,
 
                             ),
@@ -80,7 +82,7 @@ class ProfilePage extends StatelessWidget {
                               iconSize: Dimensions.icon24-4,
                             ),
                             bigText: BigText(
-                              text: userController.userModel.email,
+                              text: userController.userModel!.email,
                               size: Dimensions.font18,
 
                             ),
@@ -97,7 +99,7 @@ class ProfilePage extends StatelessWidget {
                               iconSize: Dimensions.icon24-4,
                             ),
                             bigText: BigText(
-                              text: userController.userModel.phone,
+                              text: userController.userModel!.phone,
                               size: Dimensions.font18,
 
                             ),

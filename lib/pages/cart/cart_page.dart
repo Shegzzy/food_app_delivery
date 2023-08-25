@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/base/no_data_page.dart';
+import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
+import 'package:food_delivery/controllers/location_controller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/controllers/product_menu_controller.dart';
 import 'package:food_delivery/utils/app_constants.dart';
@@ -20,8 +22,8 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: [//header
-
+        children: [
+          //header
           Positioned(
               top: Dimensions.height45,
               left: Dimensions.width20,
@@ -38,7 +40,6 @@ class CartPage extends StatelessWidget {
                       iconColor: Colors.white,
                       backgroundColor: AppColors.mainColor,),
                   ),
-
                   Row(
                     children: [
                       GestureDetector(
@@ -208,7 +209,16 @@ class CartPage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: (){
-                    cartController.addToHistory();
+                    //cartController.addToHistory();
+                    if(Get.find<AuthController>().userLoggedIn()){
+
+                      if(Get.find<LocationController>().addressList.isEmpty){
+                        Get.toNamed(RouteHelper.getAddressPage());
+                      }
+                    }else{
+                      Get.toNamed(RouteHelper.getLoginPage());
+                    }
+
                   },
                   child: Container(
                     padding: EdgeInsets.only(left: Dimensions.width15, right: Dimensions.width15, top: Dimensions.height10, bottom: Dimensions.height10),

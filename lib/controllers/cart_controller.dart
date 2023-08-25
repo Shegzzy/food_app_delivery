@@ -12,7 +12,7 @@ class CartController extends GetxController{
   Map<int, CartModel> _items = {};
   Map<int, CartModel> get items => _items;
 
-  // only for storage and sharedpreferences
+  // only for storage and shared-preferences
   List<CartModel> storageItems = [];
 
   void addItems(ProductModel product, int quantity){

@@ -30,6 +30,20 @@ class SignUpPage extends StatelessWidget {
       String phone = phoneController.text.trim();
       String password = passwordController.text.trim();
 
+      // List<Map<String, dynamic>> validationRules = [
+      //   {'field': name, 'message': "Type in your name", 'title': "Name Field"},
+      //   {'field': phone, 'message': "Enter a valid phone number", 'title': "Phone Number"},
+      //   {'field': email, 'message': "Enter a valid email address", 'title': "Invalid Email", 'check': !GetUtils.isEmail(email)},
+      //   {'field': password, 'message': "Enter at least 8 password characters", 'title': "Invalid Password", 'check': password.length < 6 || password.isEmpty},
+      // ];
+      //
+      // for (var rule in validationRules) {
+      //   if (rule['field'].isEmpty || (rule.containsKey('check') && rule['check'])) {
+      //     customSnackBar(rule['message'], title: rule['title']);
+      //     break;
+      //   }
+      // }
+
       if(name.isEmpty){
         customSnackBar("Type in your name", title: "Name Field");
       }else if(phone.isEmpty){
@@ -44,9 +58,10 @@ class SignUpPage extends StatelessWidget {
             email: email,
             phone: phone,
             password: password);
+
         authController.registration(signUpModel).then((status){
           if(status.isSuccess){
-            Get.offNamed(RouteHelper.getInitial());
+            Get.offNamed(RouteHelper.initial);
           }else{
             customSnackBar(status.message);
           }

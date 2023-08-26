@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:food_delivery/data/repositories/location_repo.dart';
 import 'package:geocoding/geocoding.dart';
@@ -14,22 +16,37 @@ class LocationController extends GetxController implements GetxService{
     required this.locationRepo
 });
   bool _loading = false;
+  bool get loading => _loading;
+
   late Position _position;
   late Position _pickPosition;
+
   Placemark _placeMark = Placemark();
   Placemark _pickPlaceMark = Placemark();
+  Placemark get placeMark => _placeMark;
+  Placemark get pickPlaceMark => _pickPlaceMark;
+
   List<AddressModel> _addressList = [];
   List<AddressModel> get addressList => _addressList;
+
+
   late List<AddressModel> _allAddressList;
+  List<AddressModel> get allAddressList => _allAddressList;
+
+
   List<String> _addressTypeList=["home", "office", "others"];
+  List<String> get addressTypeList => _addressTypeList;
+
   int _addressTypeIndex=0;
+  int get addressTypeIndex => _addressTypeIndex;
+
+
   late Map<String, dynamic> _getAddress;
   Map get getAddress => _getAddress;
 
   bool _updateAddressData = true;
-
   bool _changeAddress = true;
-  bool get loading => _loading;
+
 
   Position get position => _position;
   Position get pickPosition => _pickPosition;
@@ -78,6 +95,8 @@ class LocationController extends GetxController implements GetxService{
               cameraPosition.target.longitude,
             )
           );
+          fromAddress? _placeMark = Placemark(name: _address):
+              _pickPlaceMark = Placemark(name: _address);
         }
       }catch(e){
         print(e);
@@ -89,10 +108,27 @@ class LocationController extends GetxController implements GetxService{
     Response response = await locationRepo.getAddressFromGeocode(latlng);
     if(response.body['status']=='OK'){
       _address = response.body["results"][0]['formatted_address'].toString();
-      print("printing address: $_address");
+      // print("printing address: $_address");
     }else{
       print("Error getting api");
     }
     return _address;
+  }
+
+   AddressModel getUserAddress(){
+    late AddressModel addressModel;
+    // Converting to map using jsonDecode
+    _getAddress = jsonDecode(locationRepo.gettingUserAddress());
+    try{
+      addressModel = AddressModel.fromJson(_getAddress);
+    }catch(e){
+      print(e);
+    }
+    return addressModel;
+  }
+
+  void setAddressTypeIndex(int index){
+    _addressTypeIndex = index;
+    update();
   }
 }

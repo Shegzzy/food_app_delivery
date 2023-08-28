@@ -21,6 +21,8 @@ class AppConstants{
   static const String CART_LIST = "cart-list";
   static const String CART_HISTORY = "cart-history";
   static const String USER_ADDRESS = "user_address";
+  static const String ADD_USER_ADDRESS = "/api/v1/customer/address/add";
+  static const String ADDRESSLIST_URI = "/api/v1/customer/address/list";
 
 
 }

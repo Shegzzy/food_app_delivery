@@ -17,10 +17,10 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.1.4
-  dots_indicator: ^2.0.0
+  dots_indicator: ^2.1.2
   google_maps_flutter: ^2.1.2
   geocoding: ^2.0.4
-  geolocator: ^8.2.0
+  geolocator: ^10.0.0
 
 
 

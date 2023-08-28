@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
 import 'package:food_delivery/controllers/product_menu_controller.dart';
-import 'package:food_delivery/pages/Food/recommended_food_details.dart';
-import 'package:food_delivery/pages/home/main_food_homepage.dart';
 import 'package:food_delivery/routes/route_helper.dart';
 import 'helper/dependencies.dart' as dep;
 import 'package:get/get.dart';
 
-import 'package:get/get.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

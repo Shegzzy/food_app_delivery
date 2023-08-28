@@ -33,7 +33,7 @@ class CartPage extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      //Get.toNamed(RouteHelper.getInitial());
+                      Get.back();
                     },
                     child: AppIcon(
                       icon: Icons.arrow_back_ios_new_rounded,
@@ -44,7 +44,7 @@ class CartPage extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: (){
-                          Get.toNamed(RouteHelper.getInitial());
+                          Get.toNamed(RouteHelper.initial);
                           },
                         child: AppIcon(
                           icon: Icons.home_sharp,
@@ -211,13 +211,13 @@ class CartPage extends StatelessWidget {
                   onTap: (){
                     //cartController.addToHistory();
                     if(Get.find<AuthController>().userLoggedIn()){
-
                       if(Get.find<LocationController>().addressList.isEmpty){
-                        Get.toNamed(RouteHelper.getAddressPage());
-
+                        Get.toNamed(RouteHelper.addAddressPage);
+                      }else{
+                        Get.offNamed(RouteHelper.initial);
                       }
                     }else{
-                      Get.toNamed(RouteHelper.getLoginPage());
+                      Get.toNamed(RouteHelper.loginPage);
                     }
 
                   },

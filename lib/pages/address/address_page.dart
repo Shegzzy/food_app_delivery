@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/controllers/location_controller.dart';
 import 'package:food_delivery/controllers/user_controller.dart';
+import 'package:food_delivery/models/address_model.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimensions.dart';
 import 'package:food_delivery/widgets/big_text.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../../widgets/app_icon.dart';
 
 class AddressPage extends StatefulWidget {
   const AddressPage({Key? key}) : super(key: key);
@@ -21,7 +24,7 @@ class _AddressPageState extends State<AddressPage> {
   final TextEditingController _contactPersonName = TextEditingController();
   final TextEditingController _contactPersonNumber = TextEditingController();
   late bool _isLogged;
-  CameraPosition _cameraPosition = const CameraPosition(target: LatLng(45.51546, -122.34566), zoom: 17);
+  CameraPosition _cameraPosition = const CameraPosition(target: LatLng(45.515655, -122.7772994935511), zoom: 17);
   late LatLng _initialPosition = const LatLng(45.51546, -122.34566);
 
   @override
@@ -34,6 +37,12 @@ class _AddressPageState extends State<AddressPage> {
       Get.find<UserController>().getUserData();
     }
     if(Get.find<LocationController>().addressList.isNotEmpty){
+      if(Get.find<LocationController>().getUserAddressFromLocalStorage()==""){
+        Get.find<LocationController>().saveUserAddress(
+          Get.find<LocationController>().addressList.last
+        );
+      }
+      Get.find<LocationController>().getUserAddress();
       _cameraPosition = CameraPosition(target: LatLng(
         double.parse(Get.find<LocationController>().getAddress["latitude"]),
         double.parse(Get.find<LocationController>().getAddress["longitude"]),
@@ -59,32 +68,23 @@ class _AddressPageState extends State<AddressPage> {
             Get.back();
           },
         ),
-
       ),
       body: GetBuilder<UserController>(builder: (userController){
         if(userController.userModel!=null&&_contactPersonName.text.isEmpty){
           _contactPersonName.text = '${userController.userModel?.name}';
           _contactPersonNumber.text = '${userController.userModel?.phone}';
 
-          if(Get.find<LocationController>().addressList.isEmpty){
+          if(Get.find<LocationController>().addressList.isNotEmpty){
             _addressController.text = Get.find<LocationController>().getUserAddress().address;
           }
         }
 
         return GetBuilder<LocationController>(builder: (locationController){
           _addressController.text = '${locationController.placeMark.name??""}'
-              '${
-              locationController.placeMark.street ?? ""
-          }'
-              '${
-              locationController.placeMark.locality ?? ""
-          }'
-              '${
-              locationController.placeMark.postalCode ?? ""
-          }'
-              '${
-              locationController.placeMark.country ?? ""
-          }';
+              '${locationController.placeMark.street ?? ""}'
+              '${locationController.placeMark.locality ?? ""}'
+              '${locationController.placeMark.postalCode ?? ""}'
+              '${locationController.placeMark.country ?? ""}';
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,12 +110,16 @@ class _AddressPageState extends State<AddressPage> {
                       indoorViewEnabled: true,
                       mapToolbarEnabled: false,
                       zoomControlsEnabled: false,
+                      myLocationButtonEnabled: true,
                       onCameraMove: ((position)=> _cameraPosition=position),
                       onCameraIdle: (){
                         locationController.updatePosition(_cameraPosition, true);
                       },
                       onMapCreated: (GoogleMapController controller){
                         locationController.settingMapController(controller);
+                        if(Get.find<LocationController>().addressList.isEmpty){
+                          // locationController.getCurrentLocation(true, mapController: controller)
+                        }
                       },
                     )
                   ],
@@ -186,7 +190,7 @@ class _AddressPageState extends State<AddressPage> {
                             decoration: InputDecoration(
                               //prefixIcon
                               prefixIcon: Icon(Icons.map_sharp, color: AppColors.yellowColor,),
-
+                              hintText: "Address",
                               //focusedBorder
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(Dimensions.radius15),
@@ -326,6 +330,62 @@ class _AddressPageState extends State<AddressPage> {
             ],
           );
         });
+      }),
+      bottomNavigationBar: GetBuilder<LocationController>(builder: (locationController){
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: Dimensions.height120-20,
+              padding: EdgeInsets.only(top: Dimensions.height20, bottom: Dimensions.height20, left: Dimensions.width20, right: Dimensions.width20),
+              decoration: BoxDecoration(
+                  color: AppColors.buttonBackgroundColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(Dimensions.radius30),
+                    topRight: Radius.circular(Dimensions.radius30),
+
+                  )
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: (){
+                      AddressModel _addressModel = AddressModel(addressType: locationController.addressTypeList[
+                        locationController.addressTypeIndex],
+                        contactPersonName: _contactPersonName.text,
+                        contactPersonNumber: _contactPersonNumber.text,
+                        address: _addressController.text,
+                        latitude: locationController.position.latitude.toString(),
+                        longitude: locationController.position.longitude.toString()
+                      );
+                      locationController.addAddress(_addressModel).then((status){
+                        if(status.isSuccess){
+                          Get.back();
+                          Get.snackbar("Address", "Address Saved Successfully");
+                        }else{
+                          Get.snackbar("Failed", "Couldn't save address");
+                        }
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: Dimensions.width45, vertical: Dimensions.width20+5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(Dimensions.radius15),
+                        color: AppColors.mainColor,
+                      ),
+                      child: Row(
+                        children: [
+                          BigText(text: "Save Address", color: Colors.white,),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        );
       }),
     );
   }

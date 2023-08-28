@@ -58,7 +58,7 @@ class PopularFoodDetails extends StatelessWidget {
                         if(page == "cartpage"){
                           Get.toNamed(RouteHelper.cartPage);
                         }else{
-                          Get.toNamed(RouteHelper.initial);
+                          Get.back();
                         }
                       },
                       child: const AppIcon(icon: Icons.arrow_back_ios)),
@@ -68,7 +68,7 @@ class PopularFoodDetails extends StatelessWidget {
                       children: [
                         GestureDetector(
                             onTap: (){
-                              Get.toNamed(RouteHelper.getCartPage());
+                              Get.toNamed(RouteHelper.cartPage);
                             },
                             child: const AppIcon(icon: Icons.shopping_cart_outlined)),
                         controller.totalItems >= 1 ?

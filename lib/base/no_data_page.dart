@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery/utils/app_constants.dart';
-import 'package:food_delivery/utils/colors.dart';
-import 'package:food_delivery/utils/dimensions.dart';
 
 class NoDataPage extends StatelessWidget {
   final String text;

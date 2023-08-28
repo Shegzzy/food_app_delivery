@@ -1,4 +1,5 @@
 import 'package:food_delivery/data/api_client.dart';
+import 'package:food_delivery/models/address_model.dart';
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -20,5 +21,19 @@ class LocationRepo{
 
   String gettingUserAddress() {
     return sharedPreferences.getString(AppConstants.USER_ADDRESS)??"";
+  }
+
+
+  Future<Response> addAddress(AddressModel addressModel) async{
+    return await apiClient.postData(AppConstants.ADD_USER_ADDRESS, addressModel.toJson());
+  }
+
+  Future<Response> getAllAddress() async{
+    return await apiClient.getData(AppConstants.ADDRESSLIST_URI);
+  }
+
+  Future<bool> saveUserAddress(String address) async{
+    apiClient.updateHeader(sharedPreferences.getString(AppConstants.APP_TOKEN)!);
+    return await sharedPreferences.setString(AppConstants.USER_ADDRESS, address);
   }
 }

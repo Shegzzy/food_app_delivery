@@ -1,5 +1,6 @@
 import 'package:food_delivery/pages/Food/popular_food_details.dart';
 import 'package:food_delivery/pages/address/address_page.dart';
+import 'package:food_delivery/pages/address/map_page.dart';
 import 'package:food_delivery/pages/cart/cart_history.dart';
 import 'package:food_delivery/pages/cart/cart_history_page.dart';
 import 'package:food_delivery/pages/cart/cart_page.dart';
@@ -21,7 +22,8 @@ class RouteHelper{
   static const historyPage = "/history-page";
   static const cartHistory = "/cart-history";
   static const splashScreen = "/splash-screen";
-  static const addAddress = "/add-address";
+  static const addAddressPage = "/add-address";
+  static const mapPage = "/map-page";
 
 
   static String getPopularFood(int pageId, String page)=>'$popularFood?pageId=$pageId&page=$page';
@@ -32,7 +34,8 @@ class RouteHelper{
   static String getSplashScreen()=> splashScreen;
   static String getLoginPage()=> loginPage;
   static String getSignUpPage()=> signUpPage;
-  static String getAddressPage()=> addAddress;
+  static String getAddressPage()=> addAddressPage;
+  static String getMapPage()=> mapPage;
   static String getInitial()=>initial;
 
   static List<GetPage> routes = [
@@ -76,7 +79,7 @@ class RouteHelper{
         transition: Transition.rightToLeftWithFade
     ),
 
-    GetPage(name: addAddress, page: (){
+    GetPage(name: addAddressPage, page: (){
       return const AddressPage();
     },
         transition: Transition.rightToLeftWithFade
@@ -105,6 +108,11 @@ class RouteHelper{
       return const CartHistory();
     },
         transition: Transition.rightToLeftWithFade
-    )
+    ),
+
+    GetPage(name: mapPage, page: (){
+      MapPage _mapPage = Get.arguments;
+      return _mapPage;
+    })
   ];
 }

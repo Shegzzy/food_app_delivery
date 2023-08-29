@@ -13,6 +13,7 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.maxFinite,
       margin: EdgeInsets.only(top: Dimensions.height15, left: Dimensions.height10-3, right: Dimensions.height10-3),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -23,14 +24,14 @@ class ProfileWidget extends StatelessWidget {
             color: Colors.grey.withOpacity(0.2),
           ),
         ],
-          borderRadius: BorderRadius.circular(Dimensions.radius15-5) 
+          borderRadius: BorderRadius.circular(Dimensions.radius15)
       ),
       padding: EdgeInsets.only(left: Dimensions.width15, top: Dimensions.height10, bottom: Dimensions.height10),
       child: Row(
         children: [
           appIcon,
           SizedBox(width: Dimensions.width20,),
-          bigText
+          Expanded(child: bigText)
         ],
       ),
     );

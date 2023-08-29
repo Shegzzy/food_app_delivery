@@ -20,6 +20,7 @@ class ProfilePage extends StatelessWidget {
     bool _userLoggedIn = Get.find<AuthController>().userLoggedIn();
     if(_userLoggedIn){
       Get.find<UserController>().getUserData();
+      Get.find<LocationController>().getUserAddress();
     }
     return Scaffold(
       appBar: AppBar(
@@ -143,9 +144,8 @@ class ProfilePage extends StatelessWidget {
                                     iconSize: Dimensions.icon24-4,
                                   ),
                                   bigText: BigText(
-                                    text: "Update your address",
+                                    text: locationController.getAddress["address"],
                                     size: Dimensions.font18,
-
                                   ),
 
                                 ),

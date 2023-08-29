@@ -3,6 +3,8 @@ import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/controllers/location_controller.dart';
 import 'package:food_delivery/controllers/user_controller.dart';
 import 'package:food_delivery/models/address_model.dart';
+import 'package:food_delivery/pages/address/map_page.dart';
+import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/utils/dimensions.dart';
 import 'package:food_delivery/widgets/big_text.dart';
@@ -76,6 +78,7 @@ class _AddressPageState extends State<AddressPage> {
 
           if(Get.find<LocationController>().addressList.isNotEmpty){
             _addressController.text = Get.find<LocationController>().getUserAddress().address;
+            print("Address From the UI: $_addressController");
           }
         }
 
@@ -85,7 +88,6 @@ class _AddressPageState extends State<AddressPage> {
               '${locationController.placeMark.locality ?? ""}'
               '${locationController.placeMark.postalCode ?? ""}'
               '${locationController.placeMark.country ?? ""}';
-
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -103,8 +105,17 @@ class _AddressPageState extends State<AddressPage> {
                 child: Stack(
                   children: [
                     GoogleMap(
-                      initialCameraPosition:
-                      CameraPosition(target: _initialPosition, zoom: 17),
+                      initialCameraPosition: CameraPosition(
+                      target: _initialPosition, zoom: 17),
+                      onTap: (mapPage){
+                        Get.toNamed(RouteHelper.getMapPage(),
+                          arguments: MapPage(
+                              fromSignUpPage: false,
+                              fromAddressPage: true,
+                              mapController: locationController.googleMapController,
+                          )
+                        );
+                      },
                       myLocationEnabled: true,
                       compassEnabled: false,
                       indoorViewEnabled: true,
@@ -351,8 +362,8 @@ class _AddressPageState extends State<AddressPage> {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      AddressModel _addressModel = AddressModel(addressType: locationController.addressTypeList[
-                        locationController.addressTypeIndex],
+                      AddressModel _addressModel = AddressModel(
+                          addressType: locationController.addressTypeList[locationController.addressTypeIndex],
                         contactPersonName: _contactPersonName.text,
                         contactPersonNumber: _contactPersonNumber.text,
                         address: _addressController.text,

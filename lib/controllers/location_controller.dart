@@ -42,7 +42,7 @@ class LocationController extends GetxController implements GetxService{
 
 
   late Map<String, dynamic> _getAddress;
-  Map get getAddress => _getAddress;
+  Map<String, dynamic> get getAddress => _getAddress;
 
   bool _updateAddressData = true;
   bool _changeAddress = true;
@@ -102,8 +102,11 @@ class LocationController extends GetxController implements GetxService{
       }catch(e){
         print(e);
       }
+      _loading=false;
+      update();
     }
   }
+
   Future<String> getAddressFromGeocode(LatLng latlng) async {
     String _address = "Unknown location found";
     Response response = await locationRepo.getAddressFromGeocode(latlng);
@@ -123,7 +126,7 @@ class LocationController extends GetxController implements GetxService{
     // Converting to map using jsonDecode
     _getAddress = jsonDecode(locationRepo.gettingUserAddress());
     try{
-      addressModel = AddressModel.fromJson(_getAddress);
+      addressModel = AddressModel.fromJson(jsonDecode(locationRepo.gettingUserAddress()));
     }catch(e){
       print(e);
     }
@@ -151,11 +154,13 @@ class LocationController extends GetxController implements GetxService{
       responseModel = ResponseModel(false, response.statusText!);
     }
     update();
+    _loading=false;
     return responseModel;
   }
 
   Future<void> getAddressList() async{
     Response response = await locationRepo.getAllAddress();
+    print("Response: ${response.body}");
     if(response.statusCode==200){
       _addressList=[];
       _allAddressList=[];

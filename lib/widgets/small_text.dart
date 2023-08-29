@@ -4,15 +4,18 @@ import 'package:food_delivery/utils/dimensions.dart';
 
 
 class SmallText extends StatelessWidget {
+  TextStyle? style;
   Color? color;
   final String text;
   double size;
   double height;
+
   SmallText({Key? key,
     this.color = const Color(0xFF332d2b),
     required this.text,
     this.size=0,
     this.height=1.2,
+    this.style,
   }) : super(key: key);
 
   @override

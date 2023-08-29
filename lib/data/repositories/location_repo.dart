@@ -19,10 +19,15 @@ class LocationRepo{
     );
   }
 
+  Future<bool> saveUserAddress(String address) async{
+    apiClient.updateHeader(sharedPreferences.getString(AppConstants.APP_TOKEN)!);
+    print("Saving: " + address);
+    return await sharedPreferences.setString(AppConstants.USER_ADDRESS, address);
+  }
+
   String gettingUserAddress() {
     return sharedPreferences.getString(AppConstants.USER_ADDRESS)??"";
   }
-
 
   Future<Response> addAddress(AddressModel addressModel) async{
     return await apiClient.postData(AppConstants.ADD_USER_ADDRESS, addressModel.toJson());
@@ -32,8 +37,4 @@ class LocationRepo{
     return await apiClient.getData(AppConstants.ADDRESSLIST_URI);
   }
 
-  Future<bool> saveUserAddress(String address) async{
-    apiClient.updateHeader(sharedPreferences.getString(AppConstants.APP_TOKEN)!);
-    return await sharedPreferences.setString(AppConstants.USER_ADDRESS, address);
-  }
 }

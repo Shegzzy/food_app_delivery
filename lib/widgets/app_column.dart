@@ -45,7 +45,7 @@ class AppColumn extends StatelessWidget {
                 text: "8AM - 8PM",
                 iconColor: AppColors.iconColor2)
           ],
-        )
+        ),
       ],
     );
   }

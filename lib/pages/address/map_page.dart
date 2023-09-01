@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/colors.dart';
+import 'package:food_delivery/widgets/custom_button.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -28,10 +30,10 @@ class _MapPageState extends State<MapPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    Get.find<LocationController>().getAddressList();
     if(Get.find<LocationController>().addressList.isEmpty){
-      _initialPosition = LatLng(45.531, -122.677433);
+      _initialPosition = const LatLng(45.531, -122.677433);
       _cameraPosition=CameraPosition(target: _initialPosition, zoom: 17);
     }else{
       if(Get.find<LocationController>().addressList.isNotEmpty){
@@ -67,7 +69,7 @@ class _MapPageState extends State<MapPage> {
                     "assets/image/place_picker.png",
                     width: 85, height: 85,
                 ):
-                CircularProgressIndicator(),
+                const CircularProgressIndicator(),
               ),
               Positioned(
                   top: Dimensions.height10,
@@ -93,16 +95,40 @@ class _MapPageState extends State<MapPage> {
                         Expanded(
                             child: Text(
                               locationController.pickPlaceMark.name??"",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,
-                                fontFamily: 'Roboto'
+                                fontFamily: 'Poppins'
                               ),
                             )
                         )
                       ],
                     ),
+                  )
+              ),
+              Positioned(
+                  bottom: Dimensions.height20,
+                  left: Dimensions.width20,
+                  right: Dimensions.width20,
+                  child: CustomButton(
+                    buttonText: 'Pick Here',
+                    onPressed: locationController.loading?null:(){
+                      if(locationController.pickPosition.latitude !=0 && locationController.pickPlaceMark.name!=null){
+                        if(widget.fromAddressPage){
+                          if(widget.mapController != null){
+                            widget.mapController!.moveCamera(
+                                CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(
+                                  locationController.pickPosition.latitude,
+                                  locationController.pickPosition.longitude,
+                                ))));
+                            locationController.setAddressData();
+                          }
+                          // Get.offNamed(RouteHelper.getAddressPage());
+                          Get.back();
+                        }
+                      }
+                    },
                   )
               ),
             ],

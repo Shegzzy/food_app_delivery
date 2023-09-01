@@ -63,16 +63,18 @@ flutter:
   assets:
     - assets/image/
   fonts:
-    - family: Roboto
+    - family: Poppins
       fonts:
-        - asset: assets/font/Roboto-Regular.ttf
+        - asset: assets/font/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/font/Poppins-Regular.ttf
           weight: 400
-        - asset: assets/font/Roboto-Medium.ttf
+        - asset: assets/font/Poppins-Medium.ttf
           weight: 500
-        - asset: assets/font/Roboto-Bold.ttf
+        - asset: assets/font/Poppins-Bold.ttf
+          weight: 600
+        - asset: assets/font/Poppins-Black.ttf
           weight: 700
-        - asset: assets/font/Roboto-Black.ttf
-          weight: 900
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

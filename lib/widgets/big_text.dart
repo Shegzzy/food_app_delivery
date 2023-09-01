@@ -21,7 +21,7 @@ class BigText extends StatelessWidget {
       maxLines: 1,
       overflow: overFlow,
       style: TextStyle(
-        fontFamily: 'Roboto',
+        fontFamily: 'Poppins',
         fontSize: size==0? Dimensions.font18:size,
         color: color,
         fontWeight: FontWeight.w500

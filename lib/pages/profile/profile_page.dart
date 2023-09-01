@@ -21,6 +21,7 @@ class ProfilePage extends StatelessWidget {
     if(_userLoggedIn){
       Get.find<UserController>().getUserData();
       Get.find<LocationController>().getUserAddress();
+      Get.find<LocationController>().getAddressList();
     }
     return Scaffold(
       appBar: AppBar(

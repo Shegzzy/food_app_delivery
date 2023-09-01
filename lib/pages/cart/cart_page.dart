@@ -179,6 +179,7 @@ class CartPage extends StatelessWidget {
         ],
       ),
         bottomNavigationBar: GetBuilder<CartController>(builder: (cartController){
+          Get.find<LocationController>().getAddressList();
           return Container(
             height: Dimensions.height120,
             padding: EdgeInsets.only(top: Dimensions.height30, bottom: Dimensions.height30, left: Dimensions.width20, right: Dimensions.width20),

@@ -26,8 +26,8 @@ class _AddressPageState extends State<AddressPage> {
   final TextEditingController _contactPersonName = TextEditingController();
   final TextEditingController _contactPersonNumber = TextEditingController();
   late bool _isLogged;
-  CameraPosition _cameraPosition = const CameraPosition(target: LatLng(45.515655, -122.7772994935511), zoom: 17);
-  late LatLng _initialPosition = const LatLng(45.51546, -122.34566);
+  late LatLng _initialPosition;
+  late CameraPosition _cameraPosition;
 
   @override
   void initState() {
@@ -38,13 +38,14 @@ class _AddressPageState extends State<AddressPage> {
     if(_isLogged && Get.find<UserController>().userModel==null){
       Get.find<UserController>().getUserData();
     }
+
     if(Get.find<LocationController>().addressList.isNotEmpty){
+      Get.find<LocationController>().getUserAddress();
       if(Get.find<LocationController>().getUserAddressFromLocalStorage()==""){
         Get.find<LocationController>().saveUserAddress(
-          Get.find<LocationController>().addressList.last
+            Get.find<LocationController>().addressList.last
         );
       }
-      Get.find<LocationController>().getUserAddress();
       _cameraPosition = CameraPosition(target: LatLng(
         double.parse(Get.find<LocationController>().getAddress["latitude"]),
         double.parse(Get.find<LocationController>().getAddress["longitude"]),
@@ -54,11 +55,16 @@ class _AddressPageState extends State<AddressPage> {
         double.parse(Get.find<LocationController>().getAddress["latitude"]),
         double.parse(Get.find<LocationController>().getAddress["longitude"]),
       );
+    }else{
+      _initialPosition = const LatLng(45.51546, -122.34566);
+      _cameraPosition = CameraPosition(target: _initialPosition, zoom: 17);
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+    final locationController = Get.find<LocationController>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -76,8 +82,8 @@ class _AddressPageState extends State<AddressPage> {
           _contactPersonName.text = '${userController.userModel?.name}';
           _contactPersonNumber.text = '${userController.userModel?.phone}';
 
-          if(Get.find<LocationController>().addressList.isNotEmpty){
-            _addressController.text = Get.find<LocationController>().getUserAddress().address;
+          if(locationController.addressList.isNotEmpty){
+            _addressController.text = locationController.getUserAddress().address;
             print("Address From the UI: $_addressController");
           }
         }
@@ -128,7 +134,7 @@ class _AddressPageState extends State<AddressPage> {
                       },
                       onMapCreated: (GoogleMapController controller){
                         locationController.settingMapController(controller);
-                        if(Get.find<LocationController>().addressList.isEmpty){
+                        if(locationController.addressList.isEmpty){
                           // locationController.getCurrentLocation(true, mapController: controller)
                         }
                       },
@@ -372,7 +378,7 @@ class _AddressPageState extends State<AddressPage> {
                       );
                       locationController.addAddress(_addressModel).then((status){
                         if(status.isSuccess){
-                          Get.back();
+                          Get.offNamed(RouteHelper.getInitial());
                           Get.snackbar("Address", "Address Saved Successfully");
                         }else{
                           Get.snackbar("Failed", "Couldn't save address");

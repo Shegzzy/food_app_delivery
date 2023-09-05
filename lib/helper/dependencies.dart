@@ -2,7 +2,7 @@ import 'package:food_delivery/controllers/auth_controller.dart';
 import 'package:food_delivery/controllers/cart_controller.dart';
 import 'package:food_delivery/controllers/location_controller.dart';
 import 'package:food_delivery/controllers/popular_product_controller.dart';
-import 'package:food_delivery/data/api_client.dart';
+import 'package:food_delivery/data/api/api_client.dart';
 import 'package:food_delivery/data/repositories/auth_repo.dart';
 import 'package:food_delivery/data/repositories/cart_repo.dart';
 import 'package:food_delivery/data/repositories/location_repo.dart';

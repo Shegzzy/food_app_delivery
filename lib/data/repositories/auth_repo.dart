@@ -4,7 +4,7 @@ import 'package:food_delivery/utils/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../api_client.dart';
+import '../api/api_client.dart';
 
 class AuthRepo{
   final ApiClient apiClient;

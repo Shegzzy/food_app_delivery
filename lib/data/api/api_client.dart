@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../base/custom_message.dart';
-import '../utils/app_constants.dart';
+import '../../base/custom_message.dart';
+import '../../utils/app_constants.dart';
 
 class ApiClient extends GetConnect implements GetxService{
   late String token;

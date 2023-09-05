@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:food_delivery/data/api/api_status_checker.dart';
 import 'package:food_delivery/data/repositories/location_repo.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -238,15 +239,16 @@ class LocationController extends GetxController implements GetxService{
     return _responseModel;
   }
 
-  locationSearch(BuildContext context, String location) async {
+  Future<List<Prediction>> locationSearch(BuildContext context, String location) async {
     if(location.isNotEmpty){
       Response response = await locationRepo.searchLocation(location);
       if(response.statusCode==200 && response.body['status'] == 'OK'){
         _predictionList = [];
         response.body['predictions'].forEach((prediction) => _predictionList.add(Prediction.fromJson(prediction)));
       }else{
-
+        ApiChecker.checkApi(response);
       }
     }
+    return _predictionList;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:food_delivery/utils/app_constants.dart';
 import 'package:get/get.dart';
 
-import '../api_client.dart';
+import '../api/api_client.dart';
 
 class UserRepo{
   final ApiClient apiClient;

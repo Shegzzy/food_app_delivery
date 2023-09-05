@@ -37,4 +37,11 @@ class LocationRepo{
     return await apiClient.getData(AppConstants.ADDRESSLIST_URI);
   }
 
+  Future<Response> getUserZone(String lat, String lng) async{
+    return await apiClient.getData('${AppConstants.ZONE_URI}?lat=$lat&lng=$lng');
+  }
+
+  Future<Response> searchLocation(String location) async{
+    return await apiClient.getData('${AppConstants.LOCATION_SEARCH_URI}?search_text=$location');
+  }
 }

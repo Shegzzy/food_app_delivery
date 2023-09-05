@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:food_delivery/data/repositories/location_repo.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/src/places.dart';
 
 import '../models/address_model.dart';
 import '../models/response_model.dart';
@@ -17,7 +19,7 @@ class LocationController extends GetxController implements GetxService{
 });
   bool _inZone = false;
   bool get inZone => _inZone;
-  bool _buttonDisabled = false;
+  bool _buttonDisabled = true;
   bool get buttonDisabled => _buttonDisabled;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -61,6 +63,8 @@ class LocationController extends GetxController implements GetxService{
   late GoogleMapController _mapController;
   GoogleMapController get googleMapController => _mapController;
 
+  List<Prediction> _predictionList = [];
+
 
   void settingMapController(GoogleMapController mapController){
     _mapController=mapController;
@@ -96,6 +100,12 @@ class LocationController extends GetxController implements GetxService{
           );
         }
 
+        ResponseModel _responseModel = await getZone(
+            cameraPosition.target.latitude.toString(),
+            cameraPosition.target.longitude.toString(),
+            true
+        );
+        _buttonDisabled = !_responseModel.isSuccess;
 
         if(_changeAddress){
           String _address = await getAddressFromGeocode(
@@ -213,18 +223,30 @@ class LocationController extends GetxController implements GetxService{
     }else{
       _isLoading = true;
     }
-
-    update();
-    await Future.delayed(Duration(seconds: 2), (){
-      if(markerLoad){
-        _responseModel = ResponseModel(true, "Successful");
-        _loading = false;
-      }else{
-        _isLoading = false;
-      }
-    });
     update();
 
+    Response response = await locationRepo.getUserZone(lat, lng);
+    if(response.statusCode == 200){
+      _inZone = true;
+      _responseModel = ResponseModel(true, response.body["zone_id"].toString());
+    }else{
+      _inZone = false;
+      _responseModel = ResponseModel(false, response.statusText!);
+    }
+      print("Zone: ${response.statusCode}");
+    update();
     return _responseModel;
+  }
+
+  locationSearch(BuildContext context, String location) async {
+    if(location.isNotEmpty){
+      Response response = await locationRepo.searchLocation(location);
+      if(response.statusCode==200 && response.body['status'] == 'OK'){
+        _predictionList = [];
+        response.body['predictions'].forEach((prediction) => _predictionList.add(Prediction.fromJson(prediction)));
+      }else{
+
+      }
+    }
   }
 }

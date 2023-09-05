@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery/pages/address/widgets/search_dialogue.dart';
 import 'package:food_delivery/routes/route_helper.dart';
 import 'package:food_delivery/utils/colors.dart';
 import 'package:food_delivery/widgets/custom_button.dart';
@@ -62,7 +63,13 @@ class _MapPageState extends State<MapPage> {
                   myLocationEnabled: true,
                   onCameraIdle: (){
                     Get.find<LocationController>().updatePosition(_cameraPosition, false);
-                  }
+                  },
+                onMapCreated: (GoogleMapController mapController){
+                    _googleMapController = mapController;
+                    if(!widget.fromAddressPage){
+                      print("Not from Address page");
+                    }
+                },
               ),
               Center(
                 child: !locationController.loading?Image.asset(
@@ -75,35 +82,46 @@ class _MapPageState extends State<MapPage> {
                   top: Dimensions.height10,
                   left: Dimensions.width20,
                   right: Dimensions.width20+45,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: Dimensions.width15),
-                    height: Dimensions.height30,
-                    decoration: BoxDecoration(
-                      color: AppColors.mainColor,
-                      borderRadius: BorderRadius.circular(Dimensions.radius15-5)
-                    ),
-                    child: Row(
-                      children: [
-                        AppIcon(
-                          icon: Icons.place,
-                          iconColor: AppColors.yellowColor,
-                          iconSize: Dimensions.icon16,
-                          backgroundColor: AppColors.paraColor,
-                          size: Dimensions.width20*2,
-                        ),
-                        SizedBox(width: Dimensions.width10,),
-                        Expanded(
-                            child: Text(
-                              locationController.pickPlaceMark.name??"",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                overflow: TextOverflow.ellipsis,
-                                fontFamily: 'Poppins'
-                              ),
-                            )
-                        )
-                      ],
+                  child: InkWell(
+                    onTap: ()=> Get.dialog(SearchDialogue(mapController: _googleMapController)),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: Dimensions.width15),
+                      height: Dimensions.height45,
+                      decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius: BorderRadius.circular(Dimensions.radius15-5)
+                      ),
+                      child: Row(
+                        children: [
+                          AppIcon(
+                            icon: Icons.place,
+                            iconColor: AppColors.yellowColor,
+                            iconSize: Dimensions.icon16,
+                            backgroundColor: AppColors.paraColor,
+                            size: Dimensions.width20*2,
+                          ),
+                          SizedBox(width: Dimensions.width10,),
+                          Expanded(
+                              child: Text(
+                                locationController.pickPlaceMark.name??"",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis,
+                                  fontFamily: 'Poppins'
+                                ),
+                              )
+                          ),
+                          SizedBox(width: Dimensions.width10,),
+                          AppIcon(
+                            icon: Icons.search_sharp,
+                            iconColor: AppColors.yellowColor,
+                            iconSize: Dimensions.icon16,
+                            backgroundColor: AppColors.paraColor,
+                            size: Dimensions.width20*2,
+                          ),
+                        ],
+                      ),
                     ),
                   )
               ),
@@ -112,7 +130,7 @@ class _MapPageState extends State<MapPage> {
                   left: Dimensions.width20,
                   right: Dimensions.width20,
                   child: CustomButton(
-                    buttonText: 'Pick Here',
+                    buttonText: locationController.inZone?widget.fromAddressPage?'Pick Here':"Find your address":"This service is not within your zone",
                     onPressed: locationController.loading?null:(){
                       if(locationController.pickPosition.latitude !=0 && locationController.pickPlaceMark.name!=null){
                         if(widget.fromAddressPage){

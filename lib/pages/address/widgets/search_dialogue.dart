@@ -18,7 +18,7 @@ class SearchDialogue extends StatelessWidget {
     final locationController = Get.find<LocationController>();
     final TextEditingController _controller = TextEditingController();
     return Container(
-      padding: EdgeInsets.all(Dimensions.width15),
+      padding: EdgeInsets.all(Dimensions.width15+5),
       alignment: Alignment.topCenter,
       child: Material(
         shape: RoundedRectangleBorder(
@@ -27,6 +27,7 @@ class SearchDialogue extends StatelessWidget {
         child: SingleChildScrollView(
           child: SizedBox(
             width: Dimensions.screenWidth,
+            height: Dimensions.height45,
             child: TypeAheadField(
               textFieldConfiguration: TextFieldConfiguration(
                 controller: _controller,
@@ -72,8 +73,9 @@ class SearchDialogue extends StatelessWidget {
                   ),
                 );
               },
-              onSuggestionSelected: (suggestion) {
-
+              onSuggestionSelected: (Prediction suggestion) {
+                locationController.selectedPlace(suggestion.placeId!, suggestion.description!, mapController);
+                Get.back();
               },
 
             )

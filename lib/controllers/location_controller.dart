@@ -251,4 +251,25 @@ class LocationController extends GetxController implements GetxService{
     }
     return _predictionList;
   }
+
+ selectedPlace(String placeID, String address, GoogleMapController mapController) async {
+    _loading = true;
+    update();
+    PlacesDetailsResponse detailsResponse;
+    Response response = await locationRepo.selectedPlace(placeID);
+    detailsResponse = PlacesDetailsResponse.fromJson(response.body);
+    _pickPosition = Position(
+        longitude: detailsResponse.result.geometry!.location.lat,
+        latitude: detailsResponse.result.geometry!.location.lat,
+        timestamp: DateTime.now(),
+        accuracy: 1,
+        altitude: 1,
+        heading: 1,
+        speed: 1,
+        speedAccuracy: 1);
+        _pickPlaceMark = Placemark(name:address);
+        _changeAddress=false;
+        _loading=false;
+        update();
+  }
 }

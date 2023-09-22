@@ -268,7 +268,16 @@ class LocationController extends GetxController implements GetxService{
         speed: 1,
         speedAccuracy: 1);
         _pickPlaceMark = Placemark(name:address);
-        _changeAddress=false;
+        if(!mapController.isNull){
+          mapController.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(
+                detailsResponse.result.geometry!.location.lat,
+                detailsResponse.result.geometry!.location.lng),
+                zoom: 17
+            )
+          ));
+        }
+        _changeAddress=true;
         _loading=false;
         update();
   }

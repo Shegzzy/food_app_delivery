@@ -104,11 +104,12 @@ class _MapPageState extends State<MapPage> {
                           Expanded(
                               child: Text(
                                 locationController.pickPlaceMark.name??"",
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                   overflow: TextOverflow.ellipsis,
-                                  fontFamily: 'Poppins'
+                                  fontFamily: 'Poppins',
+                                  fontSize: Dimensions.font18-3
                                 ),
                               )
                           ),
